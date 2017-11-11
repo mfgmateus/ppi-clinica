@@ -128,6 +128,30 @@
     }
 
     ?>
+  <script>
+    function searchCep()
+    {
+      var cep = document.getElementById("cep").value;
+      if (cep.length == 8)
+      {
+        console.log(cep);
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function()
+        {
+          if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+          {
+            var result = JSON.parse(xmlhttp.response);
+            document.getElementById("address").value = result.address;
+            document.getElementById("district").value = result.district;
+            document.getElementById("city").value = result.city;
+            document.getElementById("state").value = result.state;
+          }
+        }
+        xmlhttp.open("GET", "search_cep.php?cep=" + cep, true);
+        xmlhttp.send();
+      }
+    }
+  </script>
 </head>
 <body>
 <?php require 'header.php' ?>
@@ -189,7 +213,7 @@
         </div>
         <div class="col col-sm-12 col-xs-12 col-lg-12">
           <label for="cep">CEP</label>
-          <input type="text" name="cep" value="<? echo $cep?>"/>
+          <input type="text" id="cep" name="cep" value="<? echo $cep?>" onkeyup="searchCep()"/>
         </div>
         <div class="col col-sm-12 col-xs-12 col-lg-12">
           <label for="address-type">Tipo de Logradouro</label>
@@ -202,7 +226,7 @@
         </div>
         <div class="col col-sm-12 col-xs-12 col-lg-12">
           <label for="address">Logradouro</label>
-          <input type="text" name="address" value="<? echo $address?>"/>
+          <input type="text" id="address" name="address" value="<? echo $address?>"/>
         </div>
         <div class="col col-sm-12 col-xs-12 col-lg-12">
           <label for="address-number">Número</label>
@@ -214,15 +238,15 @@
         </div>
         <div class="col col-sm-12 col-xs-12 col-lg-12">
           <label for="district">Bairro</label>
-          <input type="text" name="district" value="<? echo $district?>"/>
+          <input type="text" id="district" name="district" value="<? echo $district?>"/>
         </div>
         <div class="col col-sm-12 col-xs-12 col-lg-12">
           <label for="state">Estado</label>
-          <input type="text" name="state" value="<? echo $state ?>"/>
+          <input type="text" id="state" name="state" value="<? echo $state ?>"/>
         </div>
         <div class="col col-sm-12 col-xs-12 col-lg-12">
           <label for="city">Cidade</label>
-          <input type="text" name="city" value="<? echo $city?>"/>
+          <input type="text" id="city" name="city" value="<? echo $city?>"/>
         </div>
         <div class="col col-sm-12 col-xs-12 col-lg-12">
           <button type="submit" name="submit">Salvar</button>
