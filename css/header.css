@@ -1,0 +1,146 @@
+/*#header {*/
+  /*text-align: center;*/
+  /*background-color: rgba(230, 230, 250, 0.7);*/
+  /*position: absolute;*/
+  /*width: 100%;*/
+  /*height: 40px;*/
+  /*top: 0px;*/
+  /*left: 0px;*/
+/*}*/
+/**/
+/*#menu {*/
+  /*display: inline-flex;*/
+  /*margin-top: 0px;*/
+  /*margin-bottom: 0px;*/
+/*}*/
+/**/
+/*#menu > li {*/
+  /*list-style: none;*/
+  /*padding: 10px;*/
+  /*margin: 10px;*/
+  /*margin-bottom: 0px;*/
+  /*margin-top: 0px;*/
+/*}*/
+/**/
+/*#header a {*/
+  /*color: midnightblue;*/
+/*}*/
+/**/
+/*#menu > li:hover {*/
+  /*background-color: rgba(230, 230, 250, 1);*/
+/*}*/
+/**/
+/*#header li a:link {*/
+  /*text-decoration: none;*/
+/*}*/
+/**/
+/*#header li a:visited {*/
+  /*text-decoration: none;*/
+/*}*/
+/**/
+/*#header li a:hover {*/
+  /*text-decoration: none;*/
+/*}*/
+/**/
+/*#header li a:active {*/
+  /*text-decoration: none;*/
+/*}*/
+/**/
+/*#submenu{*/
+  /*display: none;*/
+  /*padding: 0px;*/
+/*}*/
+/**/
+/*#submenu > li {*/
+  /*list-style: none;*/
+/*}*/
+/**/
+/*#menu > li:hover #submenu {*/
+  /*display: block;*/
+/*}*/
+/**/
+/*#submenu > li:hover #submenu {*/
+  /*display: block;*/
+/*}*/
+/**/
+
+/*html{*/
+  /*width: 100%;*/
+  /*margin: 0;*/
+  /*padding: 0;*/
+  /*min-width: 1500px;*/
+/*}*/
+/*body{*/
+  /*margin: 0;*/
+  /*padding: 0;*/
+/*}*/
+/*.header{*/
+  /*width: 100%;*/
+  /*height: 30%;*/
+  /*min-height: 250px;*/
+  /*background-color: white;*/
+/*}*/
+/*.logo > img{*/
+  /*height: 150px;*/
+  /*width: auto;*/
+  /*margin: 50px 30% 0 30%;*/
+/*}*/
+/*.menu{*/
+  /*width: 100%;*/
+  /*height: 50px;*/
+  /*background-color: black;*/
+  /*float: left;*/
+  /*position: relative;*/
+  /*margin: 0;*/
+  /*padding: 0;*/
+/*}*/
+/*.menu > ul > li {*/
+  /*float:left;*/
+  /*list-style: none;*/
+  /*text-align: center;*/
+  /*margin: 0;*/
+  /*padding: 0;*/
+/*}*/
+/*.menu-list > li  a{*/
+  /*font-size: 16px;*/
+  /*font-weight: 900;*/
+  /*text-transform: uppercase;*/
+  /*min-width: 160px;*/
+  /*color: white;*/
+  /*float: left;*/
+  /*position: relative;*/
+  /*height: 20px;*/
+  /*background-color: black;*/
+  /*padding: 15px;*/
+  /*text-align: left;*/
+  /*text-decoration: none;*/
+  /*letter-spacing:0.2em;*/
+  /*margin: 0;*/
+/*}*/
+/*.menu-list li:hover a{*/
+  /*background-color: rgb(22,160,133);*/
+/*}*/
+/*.menu-list:after{*/
+  /*content: '.';*/
+  /*display: block;*/
+  /*clear: both;*/
+  /*visibility: hidden;*/
+  /*line-height: 0;*/
+  /*height: 0;*/
+/*}*/
+/*.menu > ul{*/
+  /*margin:0 20%;*/
+/*}*/
+/*.sub-menu-list {*/
+  /*top: 50px;*/
+  /*display: none;*/
+  /*min-width: 160px;*/
+  /*position: absolute;*/
+  /*z-index: 1000;*/
+  /*list-style: none;*/
+  /*margin: 0;*/
+  /*padding: 0;*/
+/*}*/
+/*.menu-list li:hover > .sub-menu-list{*/
+  /*display: block;*/
+/*}*/
