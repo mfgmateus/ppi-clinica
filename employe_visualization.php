@@ -12,12 +12,93 @@
     $sqlPositions = "SELECT ID, NAME FROM POSITIONS ORDER BY NAME";
     $positions = select($sqlPositions);
 
-    $sqlSpecialities = "SELECT ID, NAME FROM ESPECIALITIES ORDER BY NAME";
-    $specialities = select($sqlPositions);
+    $sqlSpecialities = "SELECT ID, NAME FROM SPECIALITIES ORDER BY NAME";
+    $specialities = select($sqlSpecialities);
 
     $civilStates = array("Solteiro (a)", "Casado (a)", "Divorciado (a)", "Viúvo (a)");
 
     $addressTypes = array("Rua", "Avenida", "Praça");
+
+    if (isset($_POST['submit'])) {
+
+        $conn = get_connection();
+
+        $id = $_POST["id"];
+
+        $sqlCollaborator = "";
+        $sqlCollaboratorAddress = "";
+
+        if ($id == 0) {
+
+            $sqlCollaborator = "INSERT INTO COLLABORATORS(NAME, BIRTHDATE, GENDER, FAMILLY, POSITION, SPECIALITY, CPF, RG)" .
+                "VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+
+            $sqlCollaboratorAddress = "INSERT INTO COLLABORATOR_ADDRESS(COLLABORATOR, CEP, ADDRESS_TYPE, ADDRESS, NUMBER, COMPLEMENT, DISTRICT, CITY, STATE)" .
+                "VALUES((SELECT MAX(ID) FROM COLLABORATORS), ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        } else {
+            $sqlCollaborator = "UPDATE COLLABORATORS" .
+                "SET NAME = ?, " .
+                "BIRTHDATE = ?, " .
+                "GENDER = ?, " .
+                "FAMILLY = ?, " .
+                "POSITION = ?, " .
+                "SPECIALITY = ?, " .
+                "CPF = ?, " .
+                "RG = ?) " .
+                "WHERE ID = $id";
+
+            $sqlCollaboratorAddress = "UPDATE COLLABORATOR_ADDRESS" .
+                "SET CEP = ?, " .
+                "CEP = ?," .
+                "ADDRESS_TYPE = ?," .
+                "ADDRESS, NUMBER = ?," .
+                "COMPLEMENT = ?," .
+                "DISTRICT = ?," .
+                "CITY = ?," .
+                "STATE = ?)" .
+                "WHERE ID = $id";
+        }
+
+        $collaboratorStatement = $conn->prepare($sqlCollaborator) or die("Falha a criar COLLABORATOR Statement: ".$conn->error);
+
+        $collaboratorAddressStatement = $conn->prepare($sqlCollaboratorAddress) or die("Falha ao criar Address Statement");
+
+        $collaboratorStatement->bind_param("ssssiiss", $name, $birthdate, $gender, $familly, $position, $speciality, $rg, $cpf);
+        $collaboratorAddressStatement->bind_param("sssissss", $cep, $address_type, $address, $number, $complement, $district, $city, $state);
+
+        $name = $_POST["name"];
+        $birthdate = $_POST["birthdate"];
+        $gender = $_POST["gender"];
+        $familly = $_POST["familly"];
+        $position = $_POST["position"];
+        $speciality = $_POST["speciality"];
+        $cpf = $_POST["cpf"];
+        $rg = $_POST["rg"];
+        $cep = $_POST["cep"];
+        $address_type = $_POST["address-type"];
+        $address = $_POST["address"];
+        $number = $_POST["address-number"];
+        $complement = $_POST["address-complement"];
+        $district = $_POST["district"];
+        $city = $_POST["city"];
+        $state = $_POST["state"];
+
+        $conn->begin_transaction();
+
+        $collaboratorStatement->execute() or die("Falha ao cadastrar funcionario (funcionario)".$conn->error);
+        $collaboratorAddressStatement->execute() or die("Falha a cadastrar funcionario (endereco)".$conn->error);
+
+        $conn->commit() or die("Falha ao cadastrar  funcionario");
+
+        $collaboratorStatement->close();
+        $collaboratorAddressStatement->close();
+
+        $conn->close();
+
+        echo "Novo funcionário cadastrado!";
+    }
+
     ?>
 </head>
 <body>
@@ -27,24 +108,25 @@
     <div class="employe-title">
       <h1><?php echo $action; ?> Funcionário</h1>
     </div>
-    <form name="employe-form" method="post" action="employe_send.php">
+    <form name="employe-form" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
       <div class="row">
+        <input type="hidden" name="id" value="<?php echo $id;?>">
         <div class="col col-sm-12 col-xs-12 col-lg-12">
           <label for="name">Nome</label>
           <input type="text" name="name"/>
         </div>
         <div class="col col-sm-12 col-xs-12 col-lg-12">
           <label for="birth-date">Data de Nascimento</label>
-          <input type="date" name="birth-date"/>
+          <input type="date" name="birthdate"/>
         </div>
         <div class="col col-sm-12 col-xs-12 col-lg-12">
-          <label for="sex">Sexo</label>
-          <input type="radio" name="sex" value="Masculino"/> Masculino
-          <input type="radio" name="sex" value="Feminino"/> Feminino
+          <label for="gender">Sexo</label>
+          <input type="radio" name="gender" value="F"/> Masculino
+          <input type="radio" name="gender" value="M"/> Feminino
         </div>
         <div class="col col-sm-12 col-xs-12 col-lg-12">
-          <label for="civil-state">Estado Civil</label>
-          <select name="civil-state">
+          <label for="familly">Estado Civil</label>
+          <select name="familly">
               <?php foreach ($civilStates as $item) {
                   echo "<option id=\"$item\">$item</option>";
               } ?>
@@ -54,12 +136,12 @@
           <label for="position">Cargo</label>
           <select name="position">
               <?php foreach ($positions as $item) {
-                  echo "<option id=\"" . $item["ID"] . "\">" . $item["NAME"] . "</option>";
+                  echo "<option value=\"" . $item["ID"] . "\">" . $item["NAME"] . "</option>";
               } ?>
           </select>
         </div>
         <div class="col col-sm-12 col-xs-12 col-lg-12">
-          <label for="medical-speciality">Especialidade Médica</label>
+          <label for="speciality">Especialidade Médica</label>
           <select name="speciality">
               <?php foreach ($specialities as $item) {
                   echo "<option id=\"" . $item["ID"] . "\">" . $item["NAME"] . "</option>";
@@ -73,10 +155,6 @@
         <div class="col col-sm-12 col-xs-12 col-lg-12">
           <label for="rg">RG</label>
           <input type="text" name="rg"/>
-        </div>
-        <div class="col col-sm-12 col-xs-12 col-lg-12">
-          <label for="cpf">CPF</label>
-          <input type="text" name="cpf"/>
         </div>
         <div class="col col-sm-12 col-xs-12 col-lg-12">
           <label for="cep">CEP</label>
