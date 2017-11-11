@@ -134,7 +134,6 @@
       var cep = document.getElementById("cep").value;
       if (cep.length == 8)
       {
-        console.log(cep);
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function()
         {
