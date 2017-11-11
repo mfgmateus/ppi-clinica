@@ -1,15 +1,19 @@
 <html lang="pt-br">
 <?php
+
+  $motivations = array("Reclamação", "Sugestão", "Elogio", "Dúvida");
+
   if (isset($_POST['submit'])){
       require 'conf/connect.php';
 
-      $sql = "INSERT INTO MESSAGES (NAME, EMAIL, MESSAGE) VALUES (?, ?, ?)";
+      $sql = "INSERT INTO MESSAGES (NAME, EMAIL, MOTIVATION, MESSAGE) VALUES (?, ?, ?, ?)";
 
       $stmt = $conn->prepare($sql);
-      $stmt->bind_param("sss", $name, $email, $message);
+      $stmt->bind_param("ssss", $name, $email, $motivation, $message);
 
       $name = $_POST["name"];
       $email = $_POST["email"];
+      $motivation = $_POST["motivation"];
       $message = $_POST["message"];
 
       $stmt->execute() or die("Falha ao inserir mensagem");
@@ -42,6 +46,14 @@
           <div class="col col-sm-12 col-xs-12 col-lg-12">
             <label for="email">Email</label>
             <input type="email" name="email" />
+          </div>
+          <div class="col col-sm-12 col-xs-12 col-lg-12">
+            <label for="motivation">Motivação</label>
+            <select name="motivation">
+                <?php foreach ($motivations as $item) {
+                    echo "<option id=\"$item\">$item</option>";
+                }?>
+            </select>
           </div>
           <div class="col col-sm-12 col-xs-12 col-lg-12">
             <label for="message">Mensagem</label>

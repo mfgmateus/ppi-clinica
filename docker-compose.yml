@@ -1,14 +1,22 @@
 version: '3.1'
 services:
+    php:
+        build: ./php-mysqli
+        volumes: 
+          - "./:/var/www/html"
+        ports:
+          - 80:80
+        depends_on:
+          - db
+        links:
+          - db:mysql
     db:
         image: mysql
-        restart: always
         environment:
             MYSQL_ROOT_PASSWORD: password
         ports:
             - 3306:3306
     adminer:
         image: adminer
-        restart: always
         ports:
             - 8080:8080

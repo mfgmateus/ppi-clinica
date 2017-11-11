@@ -5,7 +5,7 @@
   require 'conf/connect.php';
   require 'conf/database.php';
 
-  $sql = "SELECT ID, NAME, EMAIL, MESSAGE FROM MESSAGES";
+  $sql = "SELECT ID, NAME, EMAIL, MOTIVATION, MESSAGE FROM MESSAGES";
 
   $items = select($conn, $sql);
 
@@ -24,15 +24,17 @@
           <thead>
             <td>Nome</td>
             <td>Email</td>
+            <td>Motivo</td>
             <td>Mensagem</td>
           </thead>
-          <?php foreach ($items as $item)
-          echo "<tr>";
-          echo"<td>" . $item["NAME"] . "</td>";
-          echo"<td>" . $item["EMAIL"] . "</td>";
-          echo"<td>" . $item["MESSAGE"] . "</td>";
-          echo "</tr>"
-          ?>
+          <?php foreach ($items as $item){
+            echo "<tr>";
+            echo "<td>" . $item['NAME'] . "</td>";
+            echo"<td>" . $item["EMAIL"] . "</td>";
+            echo"<td>" . $item["MOTIVATION"] . "</td>";
+            echo"<td>" . $item["MESSAGE"] . "</td>";
+            echo "</tr>";
+          } ?>
         </table>
       </div>
   </div>
