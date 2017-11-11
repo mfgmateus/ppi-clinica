@@ -4,7 +4,9 @@
   $motivations = array("Reclamação", "Sugestão", "Elogio", "Dúvida");
 
   if (isset($_POST['submit'])){
-      require 'conf/connect.php';
+      require 'conf/database.php';
+
+      $conn = get_connection();
 
       $sql = "INSERT INTO MESSAGES (NAME, EMAIL, MOTIVATION, MESSAGE) VALUES (?, ?, ?, ?)";
 

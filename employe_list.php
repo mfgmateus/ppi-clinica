@@ -1,7 +1,6 @@
 <html lang="pt-br">
 <?php
 
-require 'conf/connect.php';
 require 'conf/database.php';
 
 $sql = "SELECT C.ID, C.NAME, C.GENDER, P.NAME AS POSITION, " .
@@ -10,7 +9,7 @@ $sql = "SELECT C.ID, C.NAME, C.GENDER, P.NAME AS POSITION, " .
     "WHERE P.ID = C.POSITION " .
     "AND C.ID = CA.COLLABORATOR ";
 
-$items = select($conn, $sql);
+$items = select($sql);
 
 ?>
 <head>
@@ -21,6 +20,7 @@ $items = select($conn, $sql);
 <body>
 <?php require 'header.php' ?>
 <div id="content">
+  <a href ="employe_visualization.php">Cadastrar Funcionário</a>
   <div class="employe-table">
     <table>
       <thead>

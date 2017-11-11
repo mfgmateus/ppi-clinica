@@ -2,12 +2,11 @@
 
 <?php
 
-  require 'conf/connect.php';
   require 'conf/database.php';
 
   $sql = "SELECT ID, NAME, EMAIL, MOTIVATION, MESSAGE FROM MESSAGES";
 
-  $items = select($conn, $sql);
+  $items = select($sql);
 
 ?>
 
