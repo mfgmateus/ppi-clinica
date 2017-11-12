@@ -1,5 +1,5 @@
 <?php session_start() ?>
-<?php require 'security.php'?>
+<?php require 'security.php' ?>
 <html lang="pt-br">
 <head>
   <link rel="stylesheet" href="css/style.css">
@@ -49,86 +49,6 @@
         $state = $employe["STATE"];
     }
 
-    if (isset($_POST['submit'])) {
-
-        $conn = get_connection();
-
-        $id = $_POST["id"];
-
-        $sqlCollaborator = "";
-        $sqlCollaboratorAddress = "";
-
-        if ($id == 0) {
-
-            $sqlCollaborator = "INSERT INTO COLLABORATORS(NAME, BIRTHDATE, GENDER, FAMILLY, POSITION, SPECIALITY, CPF, RG)" .
-                "VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
-
-            $sqlCollaboratorAddress = "INSERT INTO COLLABORATOR_ADDRESS(COLLABORATOR, CEP, ADDRESS_TYPE, ADDRESS, NUMBER, COMPLEMENT, DISTRICT, CITY, STATE)" .
-                "VALUES((SELECT MAX(ID) FROM COLLABORATORS), ?, ?, ?, ?, ?, ?, ?, ?)";
-
-        } else {
-            $sqlCollaborator = "UPDATE COLLABORATORS " .
-                "SET NAME = ?, " .
-                "BIRTHDATE = ?, " .
-                "GENDER = ?, " .
-                "FAMILLY = ?, " .
-                "POSITION = ?, " .
-                "SPECIALITY = ?, " .
-                "CPF = ?, " .
-                "RG = ? " .
-                "WHERE ID = $id";
-
-            $sqlCollaboratorAddress = "UPDATE COLLABORATOR_ADDRESS " .
-                "SET CEP = ?, " .
-                "ADDRESS_TYPE = ?," .
-                "ADDRESS = ?," .
-                "NUMBER = ?," .
-                "COMPLEMENT = ?," .
-                "DISTRICT = ?," .
-                "CITY = ?," .
-                "STATE = ? " .
-                "WHERE COLLABORATOR = $id";
-        }
-
-        $collaboratorStatement = $conn->prepare($sqlCollaborator) or die("Falha a criar COLLABORATOR Statement: " . $conn->error);
-
-        $collaboratorAddressStatement = $conn->prepare($sqlCollaboratorAddress) or die("Falha ao criar Address Statement" . $conn->error);
-
-        $collaboratorStatement->bind_param("ssssiiss", $name, $birthdate, $gender, $familly, $position, $speciality, $rg, $cpf);
-        $collaboratorAddressStatement->bind_param("sssissss", $cep, $address_type, $address, $number, $complement, $district, $city, $state);
-
-        $name = $_POST["name"];
-        $birthdate = $_POST["birthdate"];
-        $gender = $_POST["gender"];
-        $familly = $_POST["familly"];
-        $position = $_POST["position"];
-        $speciality = $_POST["speciality"];
-        $cpf = $_POST["cpf"];
-        $rg = $_POST["rg"];
-        $cep = $_POST["cep"];
-        $address_type = $_POST["address-type"];
-        $address = $_POST["address"];
-        $number = $_POST["address-number"];
-        $complement = $_POST["address-complement"];
-        $district = $_POST["district"];
-        $city = $_POST["city"];
-        $state = $_POST["state"];
-
-        $conn->begin_transaction();
-
-        $collaboratorStatement->execute() or die("Falha ao cadastrar funcionario (funcionario)" . $conn->error);
-        $collaboratorAddressStatement->execute() or die("Falha a cadastrar funcionario (endereco)" . $conn->error);
-
-        $conn->commit() or die("Falha ao cadastrar  funcionario");
-
-        $collaboratorStatement->close();
-        $collaboratorAddressStatement->close();
-
-        $conn->close();
-
-        echo "Novo funcionário cadastrado!";
-    }
-
     ?>
   <script>
     function searchCep() {
@@ -152,101 +72,127 @@
 </head>
 <body>
 <?php require 'header.php' ?>
-<div id="content">
-  <div class="employe">
+<div class="row" id="content">
+  <div class="col-sm-10 offset-sm-1 text-center">
     <div class="employe-title">
       <h1><?php echo $action; ?> Funcionário</h1>
     </div>
-    <form name="employe-form" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
+    <form name="employe-form" method="post" action="employe_save.php" id="form">
       <div class="row">
         <input type="hidden" name="id" value="<?php echo $id; ?>">
-        <div class="col col-sm-12 col-xs-12 col-lg-12">
+        <div class="col col-sm-12 col-xs-12 col-lg-12 form-group custom-label">
           <label for="name">Nome</label>
-          <input type="text" name="name" value="<? echo $name ?>"/>
+          <input type="text" name="name" class="form-control" value="<? echo $name ?>"/>
         </div>
-        <div class="col col-sm-12 col-xs-12 col-lg-12">
+      </div>
+      <div class="row">
+        <div class="col col-sm-12 col-xs-12 col-lg-5 form-group custom-label">
           <label for="birth-date">Data de Nascimento</label>
-          <input type="date" name="birthdate" value="<? echo $birthdate ?>"/>
+          <input type="date" name="birthdate" class="form-control" value="<? echo $birthdate ?>"/>
         </div>
-        <div class="col col-sm-12 col-xs-12 col-lg-12">
+        <div class="col col-sm-12 col-xs-12 col-lg-2 form-group custom-label">
           <label for="gender">Sexo</label>
-          <input type="radio" name="gender" value="F" <? echo ($gender == "F") ? "checked" : "" ?>/> Feminino
-          <input type="radio" name="gender" value="M" <? echo ($gender == "M") ? "checked" : "" ?>/> Masculino
+          <div class="row">
+            <div class="col col-sm-6 col-xs-6 col-lg-6 form-group">
+              <label class="custom-control custom-radio">
+                <input type="radio" class="custom-control-input" name="gender"
+                       value="M" <? echo ($gender == "M") ? "checked" : "" ?>/>
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">M</span>
+              </label>
+            </div>
+            <div class="col col-sm-6 col-xs-6 col-lg-6 form-group">
+              <label class="custom-control custom-radio">
+                <input type="radio" class="custom-control-input" name="gender"
+                       value="F" <? echo ($gender == "F") ? "checked" : "" ?>/>
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">F</span>
+              </label>
+            </div>
+          </div>
         </div>
-        <div class="col col-sm-12 col-xs-12 col-lg-12">
+        <div class="col col-sm-12 col-xs-12 col-lg-5 form-group custom-label">
           <label for="familly">Estado Civil</label>
-          <select name="familly">
+          <select name="familly" class="form-control">
               <?php foreach ($civilStates as $item) {
                   $selected = ($item == $familly) ? 'selected="selected"' : '';
                   echo "<option id=\"$item\" $selected>$item</option>";
               } ?>
           </select>
         </div>
-        <div class="col col-sm-12 col-xs-12 col-lg-12">
+      </div>
+      <div class="row">
+        <div class="col col-sm-12 col-xs-12 col-lg-6 form-group custom-label">
           <label for="position">Cargo</label>
-          <select name="position">
+          <select name="position" class="form-control">
+              <option value="0">Selecione</option>
               <?php foreach ($positions as $item) {
                   $selected = ($position == $item["ID"]) ? 'selected="selected"' : '';
                   echo "<option value=\"" . $item["ID"] . "\" $selected>" . $item["NAME"] . "</option>";
               } ?>
           </select>
         </div>
-        <div class="col col-sm-12 col-xs-12 col-lg-12">
+        <div class="col col-sm-12 col-xs-12 col-lg-6 form-group custom-label">
           <label for="speciality">Especialidade Médica</label>
-          <select name="speciality">
+          <select name="speciality" class="form-control">
+              <option value="0">Selecione</option>
               <?php foreach ($specialities as $item) {
                   $selected = ($speciality == $item["ID"]) ? 'selected="selected"' : '';
                   echo "<option id=\"" . $item["ID"] . "\" $selected>" . $item["NAME"] . "</option>";
               } ?>
           </select>
         </div>
-        <div class="col col-sm-12 col-xs-12 col-lg-12">
+      </div>
+      <div class="row">
+        <div class="col col-sm-12 col-xs-12 col-lg-6 form-group custom-label">
           <label for="cpf">CPF</label>
-          <input type="text" name="cpf" value="<? echo $cpf ?>"/>
+          <input type="text" name="cpf" class="form-control" value="<? echo $cpf ?>"/>
         </div>
-        <div class="col col-sm-12 col-xs-12 col-lg-12">
+        <div class="col col-sm-12 col-xs-12 col-lg-6 form-group custom-label">
           <label for="rg">RG</label>
-          <input type="text" name="rg" value="<? echo $rg ?>"/>
+          <input type="text" name="rg" class="form-control" value="<? echo $rg ?>"/>
         </div>
-        <div class="col col-sm-12 col-xs-12 col-lg-12">
+      </div>
+      <div class="row">
+        <div class="col col-sm-12 col-xs-12 col-lg-3 form-group custom-label">
           <label for="cep">CEP</label>
-          <input type="text" id="cep" name="cep" value="<? echo $cep ?>" onkeyup="searchCep()"/>
+          <input type="text" id="cep" name="cep" class="form-control" value="<? echo $cep ?>"
+                 onkeyup="searchCep()"/>
         </div>
-        <div class="col col-sm-12 col-xs-12 col-lg-12">
-          <label for="address-type">Tipo de Logradouro</label>
-          <select name="address-type">
-              <?php foreach ($addressTypes as $index => $item) {
-                  $selected = ($address_type == $item["ID"]) ? 'selected="selected"' : '';
-                  echo "<option id=\"$item\" $selected>$item</option>";
-              } ?>
-          </select>
+        <div class="col col-sm-12 col-xs-12 col-lg-2 form-group custom-label">
+          <label for="address-type">Tipo Logradouro</label>
+          <input type="text" name="address-type" class="form-control" value="<? echo $address_type ?>"/>
         </div>
-        <div class="col col-sm-12 col-xs-12 col-lg-12">
+        <div class="col col-sm-12 col-xs-12 col-lg-5 form-group custom-label">
           <label for="address">Logradouro</label>
-          <input type="text" id="address" name="address" value="<? echo $address ?>"/>
+          <input type="text" id="address" class="form-control" name="address" value="<? echo $address ?>"/>
         </div>
-        <div class="col col-sm-12 col-xs-12 col-lg-12">
+        <div class="col col-sm-12 col-xs-12 col-lg-2 form-group custom-label">
           <label for="address-number">Número</label>
-          <input type="number" name="address-number" value="<? echo $number ?>"/>
+          <input type="number" name="address-number" class="form-control" value="<? echo $number ?>"/>
         </div>
-        <div class="col col-sm-12 col-xs-12 col-lg-12">
+      </div>
+      <div class="row">
+        <div class="col col-sm-12 col-xs-12 col-lg-3 form-group custom-label">
           <label for="address-complement">Complemento</label>
-          <input type="text" name="address-complement" value="<? echo $complement ?>"/>
+          <input type="text" name="address-complement" class="form-control" value="<? echo $complement ?>"/>
         </div>
-        <div class="col col-sm-12 col-xs-12 col-lg-12">
+        <div class="col col-sm-12 col-xs-12 col-lg-3 form-group custom-label">
           <label for="district">Bairro</label>
-          <input type="text" id="district" name="district" value="<? echo $district ?>"/>
+          <input type="text" id="district" name="district" class="form-control" value="<? echo $district ?>"/>
         </div>
-        <div class="col col-sm-12 col-xs-12 col-lg-12">
+        <div class="col col-sm-12 col-xs-12 col-lg-3 form-group custom-label">
           <label for="state">Estado</label>
-          <input type="text" id="state" name="state" value="<? echo $state ?>"/>
+          <input type="text" id="state" name="state" class="form-control" value="<? echo $state ?>"/>
         </div>
-        <div class="col col-sm-12 col-xs-12 col-lg-12">
+        <div class="col col-sm-12 col-xs-12 col-lg-3 form-group custom-label">
           <label for="city">Cidade</label>
-          <input type="text" id="city" name="city" value="<? echo $city ?>"/>
+          <input type="text" id="city" name="city" class="form-control" value="<? echo $city ?>"/>
         </div>
+      </div>
+      <div class="row">
         <div class="col col-sm-12 col-xs-12 col-lg-12">
-          <button type="submit" name="submit">Salvar</button>
+          <button type="submit" name="submit" class="btn btn-primary">Salvar</button>
         </div>
       </div>
     </form>

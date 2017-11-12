@@ -41,3 +41,11 @@ html {
 #contact button {
   float: right;
 }
+.custom-label > label {
+  float: left;
+  font-weight: bold;
+}
+
+#form button {
+  float: right;
+}
