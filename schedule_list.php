@@ -1,5 +1,5 @@
 <?php session_start() ?>
-<?php require 'security.php';?>
+<?php require 'security.php'; ?>
 <html lang="pt-br">
 <?php
 require 'conf/database.php';
@@ -15,15 +15,18 @@ $items = select($sql);
 
 ?>
 <head>
-  <link rel="stylesheet" href="css/style.css">
   <title>Agendamentos</title>
+  <link rel="stylesheet" href="css/style.css">
   <meta charset="UTF-8">
 </head>
 <body>
 <?php require 'header.php' ?>
-<div id="content">
-  <div class="contact-table">
-    <table>
+<script>
+  applyDatatable('#schedule-list');
+</script>
+<div class="row" id="contact">
+  <div class="col-sm-12 col-xs-12 col-lg-12 text-center">
+    <table id="schedule-list" class="table table-striped table-bordered">
       <thead>
       <td>Médico</td>
       <td>Especialiade</td>
