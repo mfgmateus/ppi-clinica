@@ -1,3 +1,5 @@
+<?php session_start() ?>
+<?php require 'security.php';?>
 <html lang="pt-br">
 <?php
 require 'conf/database.php';
@@ -30,14 +32,14 @@ $items = select($sql);
       <td>Paciente</td>
       <td>Telefone Paciente</td>
       </thead>
-        <?php foreach ($items as $item){
+        <?php foreach ($items as $item) {
             echo "<tr>";
             echo "<td>" . $item['DOCTOR'] . "</td>";
             echo "<td>" . $item['SPECIALITY'] . "</td>";
-            echo"<td>" . $item["SCHEDULE_DATE"] . "</td>";
-            echo"<td>" . $item["SCHEDULE_TIME"] . "</td>";
-            echo"<td>" . $item["PATIENT"] . "</td>";
-            echo"<td>" . $item["PATIENT_PHONE"] . "</td>";
+            echo "<td>" . $item["SCHEDULE_DATE"] . "</td>";
+            echo "<td>" . $item["SCHEDULE_TIME"] . "</td>";
+            echo "<td>" . $item["PATIENT"] . "</td>";
+            echo "<td>" . $item["PATIENT_PHONE"] . "</td>";
             echo "</tr>";
         } ?>
     </table>

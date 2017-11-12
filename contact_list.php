@@ -1,12 +1,14 @@
+<?php session_start() ?>
+<?php require 'security.php';?>
 <html lang="pt-br">
 
 <?php
 
-  require 'conf/database.php';
+require 'conf/database.php';
 
-  $sql = "SELECT ID, NAME, EMAIL, MOTIVATION, MESSAGE FROM MESSAGES";
+$sql = "SELECT ID, NAME, EMAIL, MOTIVATION, MESSAGE FROM MESSAGES";
 
-  $items = select($sql);
+$items = select($sql);
 
 ?>
 
@@ -16,26 +18,26 @@
   <meta charset="UTF-8">
 </head>
 <body>
-  <?php require 'header.php' ?>
-  <div id="content">
-      <div class="contact-table">
-        <table>
-          <thead>
-            <td>Nome</td>
-            <td>Email</td>
-            <td>Motivo</td>
-            <td>Mensagem</td>
-          </thead>
-          <?php foreach ($items as $item){
+<?php require 'header.php' ?>
+<div id="content">
+  <div class="contact-table">
+    <table>
+      <thead>
+      <td>Nome</td>
+      <td>Email</td>
+      <td>Motivo</td>
+      <td>Mensagem</td>
+      </thead>
+        <?php foreach ($items as $item) {
             echo "<tr>";
             echo "<td>" . $item['NAME'] . "</td>";
-            echo"<td>" . $item["EMAIL"] . "</td>";
-            echo"<td>" . $item["MOTIVATION"] . "</td>";
-            echo"<td>" . $item["MESSAGE"] . "</td>";
+            echo "<td>" . $item["EMAIL"] . "</td>";
+            echo "<td>" . $item["MOTIVATION"] . "</td>";
+            echo "<td>" . $item["MESSAGE"] . "</td>";
             echo "</tr>";
-          } ?>
-        </table>
-      </div>
+        } ?>
+    </table>
   </div>
+</div>
 </body>
 </html>

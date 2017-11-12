@@ -1,3 +1,6 @@
+<?php
+  session_start();
+?>
 <html lang="pt-br">
 <head>
   <link rel="stylesheet" href="css/style.css">
@@ -14,7 +17,8 @@
     <p>Missão</p>
   </div>
   <div class="block">
-    <p>Valores<p>
+    <p>Valores
+    <p>
   </div>
 </div>
 </body>

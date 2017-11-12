@@ -1,3 +1,4 @@
+<?php session_start() ?>
 <?php
 require 'conf/database.php';
 
@@ -23,7 +24,7 @@ $originalResult = select($query);
 
 $result = array();
 
-if($originalResult == null){
+if ($originalResult == null) {
     echo json_encode(array());
     return;
 }

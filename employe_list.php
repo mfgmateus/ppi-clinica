@@ -1,3 +1,6 @@
+<?php session_start() ?>
+<?php require 'security.php';?>
+
 <html lang="pt-br">
 <?php
 
@@ -20,7 +23,7 @@ $items = select($sql);
 <body>
 <?php require 'header.php' ?>
 <div id="content">
-  <a href ="employe_visualization.php">Cadastrar Funcionário</a>
+  <a href="employe_visualization.php">Cadastrar Funcionário</a>
   <div class="employe-table">
     <table>
       <thead>
