@@ -3,6 +3,7 @@
 <?php
 
 require 'conf/database.php';
+require_once 'message.php';
 
 $sqlSpecialities = "SELECT ID, NAME FROM SPECIALITIES ORDER BY NAME";
 $specialities = select($sqlSpecialities);
@@ -33,17 +34,18 @@ if (isset($_POST['submit'])) {
 
     $conn->begin_transaction();
 
-    $patientStmt->execute() or die("Falha ao agendar consulta (paciente)" . $conn->error);
-    $scheduleStmt->execute() or die("Falha ao agendar consulta (schedule)" . $conn->error);
+    $patientStmt->execute() or $_SESSION['MESSAGE'] = serialize(new Message('danger', "Não foi possível agendar a consulta!"));
+    $scheduleStmt->execute() or $_SESSION['MESSAGE'] = serialize(new Message('danger', "Não foi possível agendar a consulta!"));
 
-    $conn->commit() or die("Falha ao cadastrar  funcionario");
+    $conn->commit() or $_SESSION['MESSAGE'] = serialize(new Message('danger', "Não foi possível agendar a consulta!"));
 
     $patientStmt->close();
     $scheduleStmt->close();
 
     $conn->close();
 
-    echo "Consulta agendada!";
+    $_SESSION['MESSAGE'] = serialize(new Message('success', "Consulta agendada com sucesso!"));
+
 }
 
 ?>
@@ -123,46 +125,50 @@ if (isset($_POST['submit'])) {
 </head>
 <body>
 <?php require 'header.php' ?>
-<div id="content">
-  <div class="schedule">
-    <div class="schedule-title">
-      <h1>Agende sua consulta</h1>
-    </div>
+<div class="row" id="contact">
+  <div class="col-sm-6 offset-sm-3 text-center">
+    <div class="h2">Agende sua consulta</div>
     <form name="schedule-form" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
       <div class="row">
-        <div class="col col-sm-12 col-xs-12 col-lg-12">
+        <div class="col col-sm-12 col-xs-12 col-lg-6 form-group">
           <label for="medical-type">Especiliadade Médica</label>
-          <select name="speciality" id="speciality" oninput="searchDoctor()">
+          <select name="speciality" id="speciality" oninput="searchDoctor()" class="form-control">
             <option value="0">Selecione</option>
               <?php foreach ($specialities as $item) {
                   echo "<option value=\"" . $item["ID"] . "\">" . $item["NAME"] . "</option>";
               } ?>
           </select>
         </div>
-        <div class="col col-sm-12 col-xs-12 col-lg-12">
+        <div class="col col-sm-12 col-xs-6 col-lg-6 form-group">
           <label for="doctor">Médico</label>
-          <select name="doctor" id="doctor">
+          <select name="doctor" id="doctor" class="form-control">
           </select>
         </div>
-        <div class="col col-sm-12 col-xs-12 col-lg-12">
+      </div>
+      <div class="row">
+        <div class="col col-sm-12 col-xs-12 col-lg-6 form-group">
           <label for="date">Data</label>
-          <input type="date" name="date" id="date" onchange="searchTime()"/>
+          <input type="date" name="date" id="date" class="form-control" onchange="searchTime()"/>
         </div>
-        <div class="col col-sm-12 col-xs-12 col-lg-12">
+        <div class="col col-sm-12 col-xs-12 col-lg-6 form-group">
           <label for="hour">Hora</label>
-          <select name="hour" id="hour">
+          <select name="hour" id="hour" class="form-control">
           </select>
         </div>
-        <div class="col col-sm-12 col-xs-12 col-lg-12">
+      </div>
+      <div class="row">
+        <div class="col col-sm-12 col-xs-12 col-lg-6 form-group">
           <label for="patient">Paciente</label>
-          <input type="text" name="patient"/>
+          <input type="text" name="patient" class="form-control"/>
         </div>
-        <div class="col col-sm-12 col-xs-12 col-lg-12">
+        <div class="col col-sm-12 col-xs-12 col-lg-6 form-group">
           <label for="patient-phone">Telefone (Paciente)</label>
-          <input type="text" name="patient-phone"/>
+          <input type="text" name="patient-phone" class="form-control"/>
         </div>
-        <div class="col col-sm-12 col-xs-12 col-lg-12">
-          <button type="submit" name="submit">Agendar</button>
+      </div>
+      <div class="row">
+        <div class="col col-sm-12 col-xs-12 col-lg-12 form-group">
+          <button type="submit" name="submit" class="btn btn-primary">Agendar</button>
         </div>
       </div>
     </form>
