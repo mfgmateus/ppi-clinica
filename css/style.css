@@ -11,16 +11,18 @@ html {
   /*left: -10px;*/
   /*height: 100%;*/
 }
+
 /**/
 .block {
   max-height: 100%;
   padding: 20px;
 }
+
 /**/
 /*.block p {*/
-  /*padding: 0px;*/
-  /*margin: 0px;*/
-  /*margin-left: 20px;*/
+/*padding: 0px;*/
+/*margin: 0px;*/
+/*margin-left: 20px;*/
 /*}*/
 
 .gallery-table img {

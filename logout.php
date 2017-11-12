@@ -1,6 +1,6 @@
 <?php
 
-require 'message.php';
+require_once 'message.php';
 
 ob_start();
 session_start();

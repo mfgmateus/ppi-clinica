@@ -1,7 +1,7 @@
 <?php
 if (isset($_POST['submit'])) {
 
-    require 'message.php';
+    require_once 'message.php';
     require 'conf/database.php';
 
     $login = $_POST['login'];
