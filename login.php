@@ -30,31 +30,39 @@ if (isset($_POST['submit'])) {
 
 }
 ?>
-<html lang="pt-br">
-<head>
-  <link rel="stylesheet" href="css/style.css">
-  <title>Login</title>
-  <meta charset="UTF-8">
-</head>
-<body>
-<div id="content">
-  <form name="employe-form" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
-    <div class="row">
-      <div class="col col-sm-12 col-xs-12 col-lg-12">
-        <label for="login">Login</label>
-        <input type="text" name="login"/>
+
+<div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Login</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-      <div class="col col-sm-12 col-xs-12 col-lg-12">
-        <label for="password">Senha</label>
-        <input type="password" name="password"/>
-      </div>
+      <form name="employe-form" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col col-sm-12 col-xs-12 col-lg-12 form-group">
+              <label for="login">Usuário</label>
+              <input type="text" name="login" class="form-control"/>
+            </div>
+            <div class="col col-sm-12 col-xs-12 col-lg-12 form-group">
+              <label for="password">Senha</label>
+              <input type="password" name="password" class="form-control"/>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="row">
+            <div class="col col-sm-12 col-xs-12 col-lg-12">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" name="submit" class="btn btn-primary">Entrar</button>
+            </div>
+          </div>
+        </div>
+      </form>
     </div>
-    <div class="row">
-      <div class="col col-sm-12 col-xs-12 col-lg-12">
-        <button type="submit" name="submit">Entrar</button>
-      </div>
-    </div>
-  </form>
+  </div>
 </div>
-</body>
-</html>

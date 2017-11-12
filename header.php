@@ -52,9 +52,9 @@
     </ul>
     <div class="my-2 my-lg-0">
         <?php if (isset($_SESSION["USER"])) {
-            echo "<a href=\"logout.php\">Logout</a>";
+            echo "<a href=\"logout.php\"><button type='button' class='btn'>Logout</button></a>";
         } else {
-            echo "<a href=\"login.php\">Login</a>";
+            echo "<button type=\"button\" class=\"btn\" data-toggle=\"modal\" data-target=\"#login\">Login</button>";
         } ?>
     </div>
   </div>
@@ -65,4 +65,39 @@
     echo $message;
     unset($_SESSION['MESSAGE']);
     ?>
+</div>
+<div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Login</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form name="employe-form" method="post" action="login.php">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col col-sm-12 col-xs-12 col-lg-12 form-group">
+              <label for="login">Usuário</label>
+              <input type="text" name="login" class="form-control"/>
+            </div>
+            <div class="col col-sm-12 col-xs-12 col-lg-12 form-group">
+              <label for="password">Senha</label>
+              <input type="password" name="password" class="form-control"/>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="row">
+            <div class="col col-sm-12 col-xs-12 col-lg-12">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" name="submit" class="btn btn-primary">Entrar</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
