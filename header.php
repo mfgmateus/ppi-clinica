@@ -56,12 +56,10 @@
     </div>
   </div>
 </nav>
-<div id="messages">
+<div id="messages" style="padding-bottom: 5px">
     <?php
-    if (isset($_SESSION['MESSAGE'])) {
-        $message = unserialize($_SESSION['MESSAGE']);
-        echo $message;
-        unset($_SESSION['MESSAGE']);
-    }
+    $message = unserialize($_SESSION['MESSAGE']);
+    echo $message;
+    unset($_SESSION['MESSAGE']);
     ?>
 </div>

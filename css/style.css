@@ -1,8 +1,11 @@
 @import url('https://fonts.googleapis.com/css?family=Merriweather+Sans');
 
 html {
-  font-family: 'Merriweather Sans', sans-serif;
+  font-family: 'Merriweather Sans', sans-serif !important;
+  width: 100%;
+  overflow-x: hidden;
 }
+
 
 #content {
   position: relative;
@@ -28,4 +31,13 @@ html {
 .gallery-table img {
   width: 350px;
   height: 250px;
+}
+
+#contact label {
+  float: left;
+  font-weight: bold;
+}
+
+#contact button {
+  float: right;
 }
