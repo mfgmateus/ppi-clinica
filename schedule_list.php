@@ -13,6 +13,10 @@ $sql = "SELECT C.NAME DOCTOR, CS.NAME SPECIALITY, S.SCHEDULE_DATE, S.SCHEDULE_TI
 
 $items = select($sql);
 
+if (!sizeof($items) > 0) {
+    $items = array();
+}
+
 ?>
 <head>
   <title>Agendamentos</title>
@@ -25,27 +29,38 @@ $items = select($sql);
   applyDatatable('#schedule-list');
 </script>
 <div class="row" id="contact">
-  <div class="col-sm-12 col-xs-12 col-lg-12 text-center">
-    <table id="schedule-list" class="table table-striped table-bordered">
-      <thead>
-      <td>Médico</td>
-      <td>Especialiade</td>
-      <td>Data</td>
-      <td>Hora</td>
-      <td>Paciente</td>
-      <td>Telefone Paciente</td>
-      </thead>
-        <?php foreach ($items as $item) {
-            echo "<tr>";
-            echo "<td>" . $item['DOCTOR'] . "</td>";
-            echo "<td>" . $item['SPECIALITY'] . "</td>";
-            echo "<td>" . $item["SCHEDULE_DATE"] . "</td>";
-            echo "<td>" . $item["SCHEDULE_TIME"] . "</td>";
-            echo "<td>" . $item["PATIENT"] . "</td>";
-            echo "<td>" . $item["PATIENT_PHONE"] . "</td>";
-            echo "</tr>";
-        } ?>
-    </table>
+  <div class="col col-sm-12 col-xs-12 col-lg-12 text-center">
+    <div class="row">
+      <div class="col col-sm-12 col-xs-12 col-lg-12 text-center">
+        <div class="h3">Agendamentos</div>
+      </div>
+    </div>
+  </div>
+  <div class="col col-sm-12 col-xs-12 col-lg-12 text-center">
+    <div class="row">
+      <div class="col-sm-12 col-xs-12 col-lg-12 text-center">
+        <table id="schedule-list" class="table table-striped table-bordered">
+          <thead>
+          <td>Médico</td>
+          <td>Especialiade</td>
+          <td>Data</td>
+          <td>Hora</td>
+          <td>Paciente</td>
+          <td>Telefone Paciente</td>
+          </thead>
+            <?php foreach ($items as $item) {
+                echo "<tr>";
+                echo "<td>" . $item['DOCTOR'] . "</td>";
+                echo "<td>" . $item['SPECIALITY'] . "</td>";
+                echo "<td>" . $item["SCHEDULE_DATE"] . "</td>";
+                echo "<td>" . $item["SCHEDULE_TIME"] . "</td>";
+                echo "<td>" . $item["PATIENT"] . "</td>";
+                echo "<td>" . $item["PATIENT_PHONE"] . "</td>";
+                echo "</tr>";
+            } ?>
+        </table>
+      </div>
+    </div>
   </div>
 </div>
 </body>
