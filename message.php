@@ -13,7 +13,7 @@ class Message
 
     public function __toString()
     {
-        return "<div class=\"message message-$this->type\">$this->value</div>";
+        return "<div class=\"alert alert-$this->type\">$this->value</div>";
     }
 }
 
