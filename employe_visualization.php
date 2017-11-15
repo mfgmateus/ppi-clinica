@@ -138,7 +138,7 @@
               <option value="0">Selecione</option>
               <?php foreach ($specialities as $item) {
                   $selected = ($speciality == $item["ID"]) ? 'selected="selected"' : '';
-                  echo "<option id=\"" . $item["ID"] . "\" $selected>" . $item["NAME"] . "</option>";
+                  echo "<option value=\"" . $item["ID"] . "\" $selected>" . $item["NAME"] . "</option>";
               } ?>
           </select>
         </div>

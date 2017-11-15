@@ -4,7 +4,7 @@
 
 require_once 'message.php';
 
-$motivations = array("Reclamação", "Sugestão", "Elogio", "Dúvida");
+$motivations = array("Reclamação", "Sugestão", "Elogio", "Dúvida", "Outro");
 
 if (isset($_POST['submit'])) {
     require 'conf/database.php';
@@ -32,7 +32,7 @@ if (isset($_POST['submit'])) {
 ?>
 <head>
   <link rel="stylesheet" href="/css/style.css">
-  <title>Home</title>
+  <title>Contato</title>
   <meta charset="UTF-8">
 </head>
 <body>
@@ -44,15 +44,15 @@ if (isset($_POST['submit'])) {
       <div class="row">
         <div class="col col-sm-12 col-xs-12 col-lg-12 form-group">
           <label for="name">Nome</label>
-          <input type="text" name="name" class="form-control"/>
+          <input type="text" name="name" class="form-control" required minlength="3" maxlength="40"/>
         </div>
         <div class="col col-sm-12 col-xs-12 col-lg-12 form-group">
           <label for="email">Email</label>
-          <input type="email" name="email" class="form-control"/>
+          <input type="email" name="email" class="form-control" required minlength="5" maxlength="40"/>
         </div>
         <div class="col col-sm-12 col-xs-12 col-lg-12 form-group">
           <label for="motivation">Motivação</label>
-          <select name="motivation" class="form-control">
+          <select name="motivation" class="form-control" required>
               <?php foreach ($motivations as $item) {
                   echo "<option id=\"$item\">$item</option>";
               } ?>
@@ -60,7 +60,7 @@ if (isset($_POST['submit'])) {
         </div>
         <div class="col col-sm-12 col-xs-12 col-lg-12 form-group">
           <label for="message">Mensagem</label>
-          <textarea name="message" class="form-control"></textarea>
+          <textarea rows="4" name="message" class="form-control" required minlength="10" maxlength="300"></textarea>
         </div>
         <div class="col col-sm-12 col-xs-12 col-lg-12 form-group">
           <button type="submit" name="submit" class="btn btn-primary">Enviar</button>

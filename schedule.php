@@ -77,7 +77,7 @@ if (isset($_POST['submit'])) {
     xmlhttp.onreadystatechange = function () {
       if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
         var result = JSON.parse(xmlhttp.response);
-        addOption(doctorElement, 0, 'Selecione');
+        addOption(doctorElement, "", 'Selecione');
         result.map(function (item) {
           addOption(doctorElement, item.id, item.name);
         });
@@ -108,9 +108,9 @@ if (isset($_POST['submit'])) {
             return value != item
           });
         });
-        addOption(timeElement, 0, 'Selecione');
+        addOption(timeElement, "", 'Selecione');
         times.map(function (item) {
-          addOption(timeElement, item, item)
+          addOption(timeElement, item, item + 'h')
         });
       }
     }
@@ -132,8 +132,8 @@ if (isset($_POST['submit'])) {
       <div class="row">
         <div class="col col-sm-12 col-xs-12 col-lg-6 form-group">
           <label for="medical-type">Especiliadade Médica</label>
-          <select name="speciality" id="speciality" oninput="searchDoctor()" class="form-control">
-            <option value="0">Selecione</option>
+          <select name="speciality" id="speciality" oninput="searchDoctor()" class="form-control" required>
+            <option value="">Selecione</option>
               <?php foreach ($specialities as $item) {
                   echo "<option value=\"" . $item["ID"] . "\">" . $item["NAME"] . "</option>";
               } ?>
@@ -141,29 +141,29 @@ if (isset($_POST['submit'])) {
         </div>
         <div class="col col-sm-12 col-xs-6 col-lg-6 form-group">
           <label for="doctor">Médico</label>
-          <select name="doctor" id="doctor" class="form-control">
+          <select name="doctor" id="doctor" class="form-control" required min="1">
           </select>
         </div>
       </div>
       <div class="row">
         <div class="col col-sm-12 col-xs-12 col-lg-6 form-group">
           <label for="date">Data</label>
-          <input type="date" name="date" id="date" class="form-control" onchange="searchTime()"/>
+          <input type="date" name="date" id="date" class="form-control" onchange="searchTime()" required/>
         </div>
         <div class="col col-sm-12 col-xs-12 col-lg-6 form-group">
           <label for="hour">Hora</label>
-          <select name="hour" id="hour" class="form-control">
+          <select name="hour" id="hour" class="form-control" required min="8" max="17">
           </select>
         </div>
       </div>
       <div class="row">
         <div class="col col-sm-12 col-xs-12 col-lg-6 form-group">
           <label for="patient">Paciente</label>
-          <input type="text" name="patient" class="form-control"/>
+          <input type="text" name="patient" class="form-control" required minlength="5" maxlength="40"/>
         </div>
         <div class="col col-sm-12 col-xs-12 col-lg-6 form-group">
           <label for="patient-phone">Telefone (Paciente)</label>
-          <input type="text" name="patient-phone" class="form-control"/>
+          <input type="text" name="patient-phone" class="form-control" required minlength="8" maxlength="20"/>
         </div>
       </div>
       <div class="row">

@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
   <link rel="stylesheet" href="css/style.css">
-  <title>Home</title>
+  <title>Galeria</title>
   <meta charset="UTF-8">
   <script>
     document.addEventListener('DOMContentLoaded', function () {
