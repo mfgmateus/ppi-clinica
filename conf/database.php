@@ -4,7 +4,7 @@ require 'credentials.php';
 
 function get_connection()
 {
-    $connection = new mysqli(Credentials::getServer(), Credentials::getUser(), Credentials::getPass(), Credentials::getDatabase());
+    $connection = new mysqli(Credentials::getServer(), Credentials::getUser(), Credentials::getPass(), Credentials::getDatabase(), 3306);
 
     mysqli_set_charset($connection, 'utf8');
 

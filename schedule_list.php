@@ -4,12 +4,13 @@
 <?php
 require 'conf/database.php';
 
-$sql = "SELECT C.NAME DOCTOR, CS.NAME SPECIALITY, S.SCHEDULE_DATE, S.SCHEDULE_TIME, " .
+$sql = "SELECT C.NAME DOCTOR, CS.NAME SPECIALITY, DATE_FORMAT(S.SCHEDULE_DATE, '%d-%m-%Y') SCHEDULE_DATE, S.SCHEDULE_TIME, " .
     "P.NAME PATIENT, P.PHONE PATIENT_PHONE " .
     "FROM COLLABORATORS C, SPECIALITIES CS, PATIENTS P, SCHEDULE S " .
     "WHERE C.SPECIALITY = CS.ID " .
     "AND P.ID = S.PATIENT " .
-    "AND C.ID = S.DOCTOR ";
+    "AND C.ID = S.DOCTOR " .
+    "ORDER BY C.NAME, S.SCHEDULE_DATE, S.SCHEDULE_TIME ";
 
 $items = select($sql);
 
@@ -53,7 +54,7 @@ if (!sizeof($items) > 0) {
                 echo "<td>" . $item['DOCTOR'] . "</td>";
                 echo "<td>" . $item['SPECIALITY'] . "</td>";
                 echo "<td>" . $item["SCHEDULE_DATE"] . "</td>";
-                echo "<td>" . $item["SCHEDULE_TIME"] . "</td>";
+                echo "<td>" . $item["SCHEDULE_TIME"] . "h</td>";
                 echo "<td>" . $item["PATIENT"] . "</td>";
                 echo "<td>" . $item["PATIENT_PHONE"] . "</td>";
                 echo "</tr>";

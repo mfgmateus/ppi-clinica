@@ -21,7 +21,8 @@
 
     $addressTypes = array("Rua", "Avenida", "Praça");
 
-    if ($id != 0) {
+    if (isset($_GET['id']) && $_GET['id'] != 0) {
+        $id = htmlspecialchars($_GET['id']);
         $query = "SELECT C.NAME, C.BIRTHDATE, C.GENDER, C.FAMILLY, C.POSITION, C.SPECIALITY, C.RG, C.CPF, " .
             "C.RG, CA.CEP, CA.ADDRESS_TYPE, CA.ADDRESS, CA.NUMBER, CA.COMPLEMENT, CA.DISTRICT, CA.CITY, CA.STATE " .
             "FROM COLLABORATORS C, COLLABORATOR_ADDRESS CA " .
@@ -58,16 +59,38 @@
         xmlhttp.onreadystatechange = function () {
           if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
             var result = JSON.parse(xmlhttp.response);
-            document.getElementById("address").value = result.address;
-            document.getElementById("district").value = result.district;
-            document.getElementById("city").value = result.city;
-            document.getElementById("state").value = result.state;
+            document.getElementById("address").value = result.address || '';
+            document.getElementById("district").value = result.district || '';
+            document.getElementById("city").value = result.city || '';
+            document.getElementById("state").value = result.state || '';
           }
         }
         xmlhttp.open("GET", "search_cep.php?cep=" + cep, true);
         xmlhttp.send();
       }
     }
+
+    function toggleSpeciality(elem) {
+      if (elem.value == 1) {
+        $('.speciality-block').show();
+      } else {
+        $('.speciality-block').hide();
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      if($('#position').val() !== "1") {
+        $('.speciality-block').hide();
+      }
+    }, false);
+
+    function validateForm() {
+      if(Date.parse(document.getElementById('birthdate').value) >= Date.now()){
+        alert("A Data de Nascimento não pode ser menor que o dia de hoje!");
+        return false;
+      }
+    }
+
   </script>
 </head>
 <body>
@@ -77,18 +100,23 @@
     <div class="employe-title">
       <h1><?php echo $action; ?> Funcionário</h1>
     </div>
-    <form name="employe-form" method="post" action="employe_save.php" id="form">
-      <div class="row">
+    <form name="employe-form" method="post" action="employe_save.php" id="form" onsubmit="return validateForm()">
+      <div class="row" style="padding-bottom: 20px">
         <input type="hidden" name="id" value="<?php echo $id; ?>">
-        <div class="col col-sm-12 col-xs-12 col-lg-12 form-group custom-label">
-          <label for="name">Nome</label>
-          <input type="text" name="name" class="form-control" value="<? echo $name ?>"/>
+        <div class="col col-sm-12 col-xs-12 col-lg-1 custom-label col-form-label">
+          <label class="col-form-label" for="name">Nome</label>
+        </div>
+        <div class="col col-sm-12 col-xs-12 col-lg-11">
+          <input type="text" name="name" class="form-control" value="<? echo $name ?>" required minlength="5"
+                 maxlength="50"/>
         </div>
       </div>
       <div class="row">
-        <div class="col col-sm-12 col-xs-12 col-lg-5 form-group custom-label">
+        <div class="col col-sm-12 col-xs-12 col-lg-1 custom-label col-form-label">
           <label for="birth-date">Data de Nascimento</label>
-          <input type="date" name="birthdate" class="form-control" value="<? echo $birthdate ?>"/>
+        </div>
+        <div class="col col-sm-12 col-xs-12 col-lg-3 form-group custom-label">
+          <input type="date" name="birthdate" id=birthdate" class="form-control" value="<? echo $birthdate ?>" required/>
         </div>
         <div class="col col-sm-12 col-xs-12 col-lg-2 form-group custom-label">
           <label for="gender">Sexo</label>
@@ -111,9 +139,11 @@
             </div>
           </div>
         </div>
-        <div class="col col-sm-12 col-xs-12 col-lg-5 form-group custom-label">
+        <div class="col col-sm-12 col-xs-12 col-lg-2 custom-label col-form-label">
           <label for="familly">Estado Civil</label>
-          <select name="familly" class="form-control">
+        </div>
+        <div class="col col-sm-12 col-xs-12 col-lg-3 form-group custom-label">
+          <select name="familly" class="form-control" required>
               <?php foreach ($civilStates as $item) {
                   $selected = ($item == $familly) ? 'selected="selected"' : '';
                   echo "<option id=\"$item\" $selected>$item</option>";
@@ -122,20 +152,24 @@
         </div>
       </div>
       <div class="row">
-        <div class="col col-sm-12 col-xs-12 col-lg-6 form-group custom-label">
+        <div class="col col-sm-12 col-xs-12 col-lg-1 custom-label col-form-label">
           <label for="position">Cargo</label>
-          <select name="position" class="form-control">
-              <option value="0">Selecione</option>
+        </div>
+        <div class="col col-sm-12 col-xs-12 col-lg-5 form-group custom-label">
+          <select name="position" id="position" class="form-control" onchange="toggleSpeciality(this)" required>
+            <option value="">Selecione</option>
               <?php foreach ($positions as $item) {
                   $selected = ($position == $item["ID"]) ? 'selected="selected"' : '';
                   echo "<option value=\"" . $item["ID"] . "\" $selected>" . $item["NAME"] . "</option>";
               } ?>
           </select>
         </div>
-        <div class="col col-sm-12 col-xs-12 col-lg-6 form-group custom-label">
-          <label for="speciality">Especialidade Médica</label>
+        <div class="col col-sm-12 col-xs-12 col-lg-2 custom-label col-form-label speciality-block">
+          <label for="speciality">Espec. Médica</label>
+        </div>
+        <div class="col col-sm-12 col-xs-12 col-lg-4 form-group custom-label speciality-block">
           <select name="speciality" class="form-control">
-              <option value="0">Selecione</option>
+            <option value="0">Selecione</option>
               <?php foreach ($specialities as $item) {
                   $selected = ($speciality == $item["ID"]) ? 'selected="selected"' : '';
                   echo "<option value=\"" . $item["ID"] . "\" $selected>" . $item["NAME"] . "</option>";
@@ -144,50 +178,79 @@
         </div>
       </div>
       <div class="row">
-        <div class="col col-sm-12 col-xs-12 col-lg-6 form-group custom-label">
+        <div class="col col-sm-12 col-xs-12 col-lg-1 custom-label col-form-label">
           <label for="cpf">CPF</label>
-          <input type="text" name="cpf" class="form-control" value="<? echo $cpf ?>"/>
-        </div>
-        <div class="col col-sm-12 col-xs-12 col-lg-6 form-group custom-label">
-          <label for="rg">RG</label>
-          <input type="text" name="rg" class="form-control" value="<? echo $rg ?>"/>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col col-sm-12 col-xs-12 col-lg-3 form-group custom-label">
-          <label for="cep">CEP</label>
-          <input type="text" id="cep" name="cep" class="form-control" value="<? echo $cep ?>"
-                 onkeyup="searchCep()"/>
-        </div>
-        <div class="col col-sm-12 col-xs-12 col-lg-2 form-group custom-label">
-          <label for="address-type">Tipo Logradouro</label>
-          <input type="text" name="address-type" class="form-control" value="<? echo $address_type ?>"/>
         </div>
         <div class="col col-sm-12 col-xs-12 col-lg-5 form-group custom-label">
-          <label for="address">Logradouro</label>
-          <input type="text" id="address" class="form-control" name="address" value="<? echo $address ?>"/>
+          <input type="text" name="cpf" class="form-control" value="<? echo $cpf ?>" required minlength="11"
+                 maxlength="11"/>
         </div>
-        <div class="col col-sm-12 col-xs-12 col-lg-2 form-group custom-label">
-          <label for="address-number">Número</label>
-          <input type="number" name="address-number" class="form-control" value="<? echo $number ?>"/>
+        <div class="col col-sm-12 col-xs-12 col-lg-1 custom-label col-form-label">
+          <label for="rg">RG</label>
+        </div>
+        <div class="col col-sm-12 col-xs-12 col-lg-5 form-group custom-label">
+          <input type="text" name="rg" class="form-control" value="<? echo $rg ?>" required minlength="5"
+                 maxlength="15"/>
         </div>
       </div>
       <div class="row">
+        <div class="col col-sm-12 col-xs-12 col-lg-1 custom-label col-form-label">
+          <label for="cep">CEP</label>
+        </div>
+        <div class="col col-sm-12 col-xs-12 col-lg-2 form-group custom-label">
+          <input type="number" id="cep" name="cep" class="form-control" value="<? echo $cep ?>"
+                 onkeyup="searchCep()" required minlength="8" maxlength="8"/>
+        </div>
+        <div class="col col-sm-12 col-xs-12 col-lg-2 custom-label col-form-label">
+          <label for="address-type">Tipo Logradouro</label>
+        </div>
+        <div class="col col-sm-12 col-xs-12 col-lg-2 form-group custom-label">
+          <input type="text" name="address-type" class="form-control" value="<? echo $address_type ?>"/>
+        </div>
+        <div class="col col-sm-12 col-xs-12 col-lg-1 custom-label col-form-label">
+          <label for="address">Logradouro</label>
+        </div>
+        <div class="col col-sm-12 col-xs-12 col-lg-4 form-group custom-label">
+          <input type="text" id="address" class="form-control" name="address" value="<? echo $address ?>" required
+                 minlength="3" maxlength="50"/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col col-sm-12 col-xs-12 col-lg-1 custom-label col-form-label">
+          <label for="address-number">Número</label>
+        </div>
         <div class="col col-sm-12 col-xs-12 col-lg-3 form-group custom-label">
+          <input type="number" name="address-number" class="form-control" value="<? echo $number ?>" maxlength="6"/>
+        </div>
+        <div class="col col-sm-12 col-xs-12 col-lg-2 custom-label col-form-label">
           <label for="address-complement">Complemento</label>
-          <input type="text" name="address-complement" class="form-control" value="<? echo $complement ?>"/>
         </div>
-        <div class="col col-sm-12 col-xs-12 col-lg-3 form-group custom-label">
+        <div class="col col-sm-12 col-xs-12 col-lg-6 form-group custom-label">
+          <input type="text" name="address-complement" class="form-control" value="<? echo $complement ?>"
+                 maxlength="20"/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col col-sm-12 col-xs-12 col-lg-1 custom-label col-form-label">
           <label for="district">Bairro</label>
-          <input type="text" id="district" name="district" class="form-control" value="<? echo $district ?>"/>
         </div>
         <div class="col col-sm-12 col-xs-12 col-lg-3 form-group custom-label">
+          <input type="text" id="district" name="district" class="form-control" value="<? echo $district ?>"
+                 maxlength="30"/>
+        </div>
+        <div class="col col-sm-12 col-xs-12 col-lg-1 custom-label col-form-label">
           <label for="state">Estado</label>
-          <input type="text" id="state" name="state" class="form-control" value="<? echo $state ?>"/>
         </div>
         <div class="col col-sm-12 col-xs-12 col-lg-3 form-group custom-label">
+          <input type="text" id="state" name="state" class="form-control" value="<? echo $state ?>" required
+                 minlength="3" maxlength="40"/>
+        </div>
+        <div class="col col-sm-12 col-xs-12 col-lg-1 custom-label col-form-label">
           <label for="city">Cidade</label>
-          <input type="text" id="city" name="city" class="form-control" value="<? echo $city ?>"/>
+        </div>
+        <div class="col col-sm-12 col-xs-12 col-lg-3 form-group custom-label">
+          <input type="text" id="city" name="city" class="form-control" value="<? echo $city ?>" required minlength="3"
+                 maxlength="40"/>
         </div>
       </div>
       <div class="row">
