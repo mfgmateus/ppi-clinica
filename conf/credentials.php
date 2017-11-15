@@ -7,6 +7,11 @@ class Credentials
     const PASS = "password";
     const DATABASE = "CLINICA";
 
+//    const SERVER = "fdb17.awardspace.net";
+//    const USER = "2464340_javadoctors";
+//    const PASS = "2464340_javadoctors";
+//    const DATABASE = "2464340_javadoctors";
+
     public static function getServer()
     {
         return self::SERVER;

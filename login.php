@@ -16,9 +16,10 @@ if (isset($_POST['submit'])) {
     $stmt->bind_param("ss", $login, $password);
 
     $stmt->execute();
-    $result = $stmt->get_result()->fetch_array();
 
-    if (sizeof($result) > 0) {
+    $stmt->bind_result($returnId);
+
+    if ($stmt->fetch()) {
         ob_start();
         session_start();
         $_SESSION['USER'] = $login;
