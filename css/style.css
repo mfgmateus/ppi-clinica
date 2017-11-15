@@ -6,6 +6,10 @@ html {
   overflow-x: hidden;
 }
 
+p {
+  text-align: justify;
+}
+
 
 #content {
   position: relative;
@@ -48,4 +52,12 @@ html {
 
 #form button {
   float: right;
+}
+
+#valores {
+  display: none;
+}
+
+#missao {
+  display: none;
 }
