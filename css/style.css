@@ -35,7 +35,11 @@ p {
 .gallery-table img {
   width: 350px;
   height: 250px;
+  padding: 10px;
+  cursor: pointer;
+
 }
+
 
 #contact label {
   float: left;
@@ -60,4 +64,8 @@ p {
 
 #missao {
   display: none;
+}
+
+.gallery-video {
+  padding: 20px;
 }
